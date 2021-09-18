@@ -36,11 +36,11 @@ export const BoldCounter = styled.Text`
 export const Body = styled.View`
     flex: 1;
     background-color: ${({ theme }) => theme.colors.background};
-    padding: 0 ${RFValue(24)}px;
 `
 
 export const InputContainer = styled.View`
     width: 100%;
+    padding: 0 ${RFValue(24)}px;
     transform: translateY(-${RFValue(28)}px);
 `
 
@@ -56,7 +56,7 @@ export const CustomButton = styled(RectButton)`
     height: 100%;
     width: 56px;
     position: absolute;
-    right: 0;
+    right: ${RFValue(24)}px;
     align-items: center;
     justify-content: center;
     border: 1px solid #B2B2B2;
