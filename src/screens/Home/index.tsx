@@ -15,6 +15,7 @@ import {
   CustomButton,
   RightArrowIcon,
 } from "./styles";
+import { Alert } from "react-native";
 
 const ASYNC_KEY = "@todo-app";
 
@@ -36,7 +37,16 @@ export function Home() {
   }, []);
 
   async function handleNewTask() {
-    if (taskText) {
+    if (!taskText) return;
+    const taskExists = tasks.map((item) => item.text).includes(taskText);
+    if (taskExists) {
+      Alert.alert(
+        "Taks already exists!",
+        "this taksk already exists, please try to enter a new one",
+        undefined,
+        { cancelable: true }
+      );
+    } else {
       const newTask = { text: taskText, isChecked: false };
       setNewTasks((oldTasks) => {
         const updatedList = [...oldTasks, newTask];
@@ -58,11 +68,28 @@ export function Home() {
   }
 
   async function handleRemoveTask(task: Task) {
-    let newTaskList = tasks.filter((item) => item.text !== task.text);
-    setNewTasks(() => {
-      updateStoredList(newTaskList);
-      return newTaskList;
-    });
+    return Alert.alert(
+      "Delete Task",
+      `Are you sure you want to dele the task "${task.text}"?`,
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "Delete",
+          onPress: () => {
+            let newTaskList = tasks.filter((item) => item.text !== task.text);
+            setNewTasks(() => {
+              updateStoredList(newTaskList);
+              return newTaskList;
+            });
+          },
+          style: "destructive",
+        },
+      ],
+      { cancelable: true }
+    );
   }
 
   async function retrieveStoredList(): Promise<Task[]> {
@@ -85,7 +112,7 @@ export function Home() {
         <TextContainer>
           <Title>To.Do</Title>
           <TaskCounter>
-            Você tem <BoldCounter>{tasks.length} tarefas</BoldCounter>
+            You have <BoldCounter>{tasks.length} tasks</BoldCounter>
           </TaskCounter>
         </TextContainer>
       </Header>
@@ -94,7 +121,7 @@ export function Home() {
           <CustomInput
             onChangeText={(text) => setNewTaskText(text)}
             value={taskText}
-            placeholder="Adicione uma tarefa"
+            placeholder="Enter a new task"
           ></CustomInput>
           <CustomButton onPress={handleNewTask}>
             <RightArrowIcon name="chevron-right"></RightArrowIcon>
