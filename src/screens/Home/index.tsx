@@ -103,12 +103,13 @@ export function Home() {
         <FlatList
           data={tasks}
           keyExtractor={(item) => item.text}
-          renderItem={({ item }) => (
+          renderItem={({ item, index }) => (
             <TaskListItem
               text={item.text}
               isChecked={item.isChecked}
               checkTask={handleCheckTask}
               deleteTask={handleRemoveTask}
+              bgColor={!!(index % 2)}
             ></TaskListItem>
           )}
         />

@@ -1,21 +1,28 @@
 import styled from 'styled-components/native';
 import { Feather } from '@expo/vector-icons'
 import { BorderlessButton } from "react-native-gesture-handler";
+import { LinearGradient } from 'expo-linear-gradient';
 
+
+interface TaskContainerProps {
+    hasBg: boolean;
+}
 
 interface TextProps {
     state: boolean;
 }
 
 
-export const TaskContainer = styled.View`
+export const TaskContainer = styled(LinearGradient).attrs<TaskContainerProps>(({ hasBg, theme }) => ({
+    colors: hasBg ? [`${theme.colors.grey}`, `${theme.colors.background}`] : [`${theme.colors.background}`, `${theme.colors.background}`],
+    start: { x: 0, y: 0 },
+    end: { x: 1, y: 0 },
+}))`
     height: 48px;
     padding: 24px;
     flex-direction: row;
     align-items: center;
-    background: white;
     justify-content: space-between;
-    /* background-color: linear-gradient(right, red , yellow); */
 `
 
 export const CustomClickArea = styled(BorderlessButton)`
